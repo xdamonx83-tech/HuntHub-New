@@ -1,0 +1,1 @@
+<?php /** Clientseitig gerendert; für SSR kannst du diese Datei analog zur JS-Karte aufbauen. */

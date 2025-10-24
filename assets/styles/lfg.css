@@ -1,0 +1,5 @@
+.lfg-grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:900px){.lfg-grid{grid-template-columns:280px 1fr}}
+.lfg-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.lfg-chip{display:inline-block;padding:.2rem .5rem;border:1px solid rgba(255,255,255,.15);border-radius:999px;font-size:.8rem}
+.lfg-empty{opacity:.7;padding:1rem;text-align:center}

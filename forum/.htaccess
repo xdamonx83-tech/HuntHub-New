@@ -1,0 +1,36 @@
+
+
+# /frm/.htaccess
+Options -MultiViews
+RewriteEngine On
+RewriteBase /frm/
+RewriteRule ^u/([0-9]+)$ user.php?id=$1 [L,QSA]
+
+# A) NIE vorhandene Dateien/Ordner anfassen (Assets, Uploads, API-Skripte, etc.)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# B) Alte "hässliche" URLs -> 301 auf hübsche, ohne Endlosschleifen
+#   THE_REQUEST stellt sicher, dass NUR echte Browser-Anfragen umgeleitet werden
+RewriteCond %{THE_REQUEST} \s/+forum/boards\.php[?\s] [NC]
+RewriteRule ^boards\.php$ /forum/ [R=301,L]
+
+RewriteCond %{THE_REQUEST} \s/+forum/board\.php\?b=([0-9]+) [NC]
+RewriteRule ^board\.php$ /forum/board/%1? [R=301,L]
+
+RewriteCond %{THE_REQUEST} \s/+forum/thread\.php\?(?:t|id)=([0-9]+) [NC]
+RewriteRule ^thread\.php$ /forum/thread/%1? [R=301,L]
+
+# C) Routing der hübschen URLs -> echte PHP-Dateien
+# Startseite Forum
+RewriteRule ^$ boards.php [L,QSA]
+
+# Board-Ansicht: /frm/board/123 oder /forum/board/123-irgendein-slug
+RewriteRule ^frm/([0-9]+)(?:-[^/]+)?/?$ board.php?b=$1 [L,QSA]
+
+# Optional: Pagination
+RewriteRule ^frm/([0-9]+)/page/([0-9]+)/?$ board.php?b=$1&page=$2 [L,QSA]
+
+# Thread-Ansicht: /frm/thread/456 oder /forum/thread/456-titel
+RewriteRule ^thread/([0-9]+)(?:-[^/]+)?/?$ thread.php?t=$1 [L,QSA]

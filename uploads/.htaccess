@@ -1,0 +1,25 @@
+
+
+<FilesMatch "\.(php|phtml|phar|pl|py|cgi)$">
+    Require all denied
+</FilesMatch>
+
+# 2) Directory Listing verhindern
+Options -Indexes
+
+# 3) Sichere Caches für statische Medien
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg  "access plus 1 year"
+    ExpiresByType image/png   "access plus 1 year"
+    ExpiresByType image/webp  "access plus 1 year"
+    ExpiresByType image/gif   "access plus 1 year"
+    ExpiresByType video/mp4   "access plus 1 year"
+    ExpiresByType video/webm  "access plus 1 year"
+    ExpiresByType audio/mpeg  "access plus 1 year"
+</IfModule>
+
+# 4) No-Sniff für zusätzliche Sicherheit
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>

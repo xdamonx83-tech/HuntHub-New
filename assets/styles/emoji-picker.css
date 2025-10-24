@@ -1,0 +1,95 @@
+/* Emoji Picker – leichtes Card-UI */
+.hh-emoji-picker {
+  position: absolute; inset: auto auto auto auto;
+  width: 344px; max-height: 420px;
+  background: #373737; border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0,0,0,.25);
+  border: 1px solid rgba(0,0,0,.06);
+  overflow: hidden; z-index: 99999999999; /* über allen Modals */
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.hh-emoji-picker * { box-sizing: border-box; }
+
+.hh-emoji-head {
+  padding: 8px 10px; border-bottom: 1px solid rgba(0,0,0,.06);
+  display: flex; align-items: center; gap: 8px;
+}
+.hh-emoji-search {
+  flex: 1; border: 1px solid rgba(0,0,0,.1); border-radius: 8px; padding: 6px 8px; font-size: 14px;
+}
+
+.hh-emoji-scroll {
+  overflow: auto; max-height: 200px; padding: 8px 8px 2px 8px;
+}
+
+.hh-emoji-section { margin: 8px 0 10px 0; }
+.hh-emoji-title {
+  font-size: 12px; color: #666; margin: 6px 4px 4px; text-transform: none;
+}
+
+.hh-emoji-grid {
+  display: grid; grid-template-columns: repeat(8, 1fr);
+  gap: 2px; padding: 2px;
+}
+.hh-emoji-item {
+  font-size: 22px; line-height: 36px; width: 36px; height: 36px;
+  text-align: center; border-radius: 8px; cursor: pointer; user-select: none;
+}
+.hh-emoji-item:hover { background: rgba(0,0,0,.06); }
+
+.hh-emoji-tabs {
+  display: flex; gap: 6px; padding: 6px; border-top: 1px solid rgba(0,0,0,.06);
+  justify-content: space-between;
+}
+.hh-emoji-tab {
+  width: 34px; height: 34px; border-radius: 8px; display:flex; align-items:center; justify-content:center;
+  cursor: pointer; font-size: 18px;
+}
+.hh-emoji-tab[aria-selected="true"] { background: rgba(0,0,0,.06); }
+
+@media (max-width: 380px) {
+  .hh-emoji-picker { width: 96vw; }
+  .hh-emoji-grid { grid-template-columns: repeat(7, 1fr); }
+}
+:root{
+  --hh-emoji-font:
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Noto Color Emoji",
+    "EmojiOne Color",
+    "Twemoji Mozilla",
+    "Segoe UI Symbol";
+}
+
+/* WICHTIG: höher gewinnen als dein globales font-family !important */
+.hh-emoji-picker,
+.hh-emoji-picker * {
+  font-family: var(--hh-emoji-font), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif !important;
+  font-weight: 400 !important;
+  font-style: normal !important;
+}
+
+/* Kachelgröße */
+.hh-emoji-item { font-size: 22px; line-height: 36px; }
+/* Twemoji Bilder im Grid */
+.hh-emoji-item img.emoji {
+  width: 24px; height: 24px; display: block; margin: 6px auto;
+}
+body .hh-emoji-picker .hh-emoji-item { font-family: var(--hh-emoji-font) !important; }
+.hh-emoji-picker{
+  --bg: #fff; --shadow: 0 15px 35px rgba(0,0,0,.25);
+  background: var(--bg); box-shadow: var(--shadow);
+  position:absolute; border-radius:12px; border:1px solid rgba(0,0,0,.06);
+}
+.hh-emoji-picker::after{
+  content:""; position:absolute; width:0; height:0;
+  border:8px solid transparent;
+  left: var(--arrow-x, 24px); /* Pfeil horizontal */
+}
+.hh-emoji-picker[data-side="top"]::after{
+  bottom:-16px; border-top-color: var(--bg);
+}
+.hh-emoji-picker[data-side="bottom"]::after{
+  top:-16px; border-bottom-color: var(--bg);
+}

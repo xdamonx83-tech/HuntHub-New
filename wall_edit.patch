@@ -1,0 +1,146 @@
+*** Begin Patch
+*** Update File: lib/wall.php
+@@
++    /**
++     * Update an existing post's content. Only the author is allowed to modify their own post.
++     *
++     * @param int    $post_id   The ID of the post to update.
++     * @param int    $user_id   The ID of the user attempting the update (must match the post's author).
++     * @param string $content   The new content for the post.
++     *
++     * @return bool True on success, false if the user is not the owner or the update fails.
++     */
++    function wall_update_post(int $post_id, int $user_id, string $content): bool
++    {
++        $db = wall_db();
++        // Fetch the owner of the post
++        $stmt = $db->prepare("SELECT user_id FROM wall_posts WHERE id = :post_id LIMIT 1");
++        $stmt->execute(['post_id' => $post_id]);
++        $owner_id = $stmt->fetchColumn();
++        if ($owner_id === false || (int)$owner_id !== $user_id) {
++            return false;
++        }
++
++        // Validate content (reuse the existing validation helper)
++        if (!wall_validate_content($content)) {
++            return false;
++        }
++
++        // Perform the update; also bump the updated_at timestamp if available
++        $stmt = $db->prepare(
++            "UPDATE wall_posts SET content = :content, updated_at = NOW() WHERE id = :post_id"
++        );
++        return $stmt->execute([
++            'content' => $content,
++            'post_id' => $post_id,
++        ]);
++    }
++
++    /**
++     * Update an existing comment's content. Only the author may edit their own comment.
++     *
++     * @param int    $comment_id The ID of the comment to update.
++     * @param int    $user_id    The ID of the user attempting the update (must match the comment's author).
++     * @param string $content    The new comment content.
++     *
++     * @return bool True on success, false if the user does not own the comment or the update fails.
++     */
++    function wall_update_comment(int $comment_id, int $user_id, string $content): bool
++    {
++        $db = wall_db();
++        // Fetch the owner of the comment
++        $stmt = $db->prepare("SELECT user_id FROM wall_comments WHERE id = :comment_id LIMIT 1");
++        $stmt->execute(['comment_id' => $comment_id]);
++        $owner_id = $stmt->fetchColumn();
++        if ($owner_id === false || (int)$owner_id !== $user_id) {
++            return false;
++        }
++
++        // Validate content (reuse the existing validation helper)
++        if (!wall_validate_content($content)) {
++            return false;
++        }
++
++        // Perform the update; also bump the updated_at timestamp if available
++        $stmt = $db->prepare(
++            "UPDATE wall_comments SET content = :content, updated_at = NOW() WHERE id = :comment_id"
++        );
++        return $stmt->execute([
++            'content' => $content,
++            'comment_id' => $comment_id,
++        ]);
++    }
+*** End Patch
+*** Begin Patch
+*** Add File: api/wall/post_update.php
++<?php
++// Endpoint to update an existing Wall post. Only the author may edit their own post.
++
++require_once __DIR__ . '/../../auth/guards.php';
++require_once __DIR__ . '/../../lib/wall.php';
++require_once __DIR__ . '/../../lib/csrf.php';
++
++header('Content-Type: application/json');
++
++// Ensure the user is logged in
++$user = require_auth();
++
++// Extract input parameters
++$post_id = isset($_POST['post_id']) ? (int)$_POST['post_id'] : 0;
++$content = isset($_POST['content']) ? trim((string)$_POST['content']) : '';
++$token = isset($_POST['csrf_token']) ? (string)$_POST['csrf_token'] : '';
++
++// Validate CSRF token and input
++if (!$post_id || $content === '' || !csrf_verify_token('wall_post_edit', $token)) {
++    http_response_code(400);
++    echo json_encode(['success' => false, 'error' => 'Invalid request']);
++    exit;
++}
++
++// Attempt to update the post
++$updated = wall_update_post($post_id, $user['id'], $content);
++
++if ($updated) {
++    echo json_encode(['success' => true]);
++} else {
++    http_response_code(403);
++    echo json_encode(['success' => false, 'error' => 'Forbidden']);
++}
+*** End Patch
+*** Begin Patch
+*** Add File: api/wall/comment_update.php
++<?php
++// Endpoint to update an existing Wall comment. Only the author may edit their own comment.
++
++require_once __DIR__ . '/../../auth/guards.php';
++require_once __DIR__ . '/../../lib/wall.php';
++require_once __DIR__ . '/../../lib/csrf.php';
++
++header('Content-Type: application/json');
++
++// Ensure the user is logged in
++$user = require_auth();
++
++// Extract input parameters
++$comment_id = isset($_POST['comment_id']) ? (int)$_POST['comment_id'] : 0;
++$content = isset($_POST['content']) ? trim((string)$_POST['content']) : '';
++$token = isset($_POST['csrf_token']) ? (string)$_POST['csrf_token'] : '';
++
++// Validate CSRF token and input
++if (!$comment_id || $content === '' || !csrf_verify_token('wall_comment_edit', $token)) {
++    http_response_code(400);
++    echo json_encode(['success' => false, 'error' => 'Invalid request']);
++    exit;
++}
++
++// Attempt to update the comment
++$updated = wall_update_comment($comment_id, $user['id'], $content);
++
++if ($updated) {
++    echo json_encode(['success' => true]);
++} else {
++    http_response_code(403);
++    echo json_encode(['success' => false, 'error' => 'Forbidden']);
++}
+*** End Patch
+*** End Patch

@@ -1,0 +1,42 @@
+@media (min-width: 768px) {
+	.hh-search{ position:relative; width:100%; max-width:400px; }
+}
+@media (max-width: 768px) {
+	.hh-search{ position:relative; width:100%; max-width:200px; }
+}
+
+.hh-search-form{ display:flex; align-items:center; gap:.5rem; background:#141414; border:1px solid rgba(255,255,255,.12); border-radius:10px; padding:.35rem .5rem; }
+.hh-search-input{ flex:1; background:transparent; color:#e5e7eb; border:0; outline:0; font-size:.95rem; }
+.hh-search-btn{ background:transparent; border:0; color:#cbd5e1; padding:.25rem; cursor:pointer; }
+.hh-search-dropdown{ position:absolute; inset:auto 0 auto 0; top:calc(100% + .25rem); background:#0d0d0d; border:1px solid rgba(255,255,255,.1); border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.45); z-index:60; }
+.hh-search-section{ padding:.5rem; }
+.hh-search-section-title{ font-size:.8rem; text-transform:uppercase; letter-spacing:.06em; opacity:.7; padding:.25rem .5rem; }
+.hh-search-list{ list-style:none; margin:0; padding:.25rem; max-height:320px; overflow:auto; }
+.hh-search-item{ margin:0; }
+.hh-search-row{ display:flex; align-items:center; gap:.6rem; width:100%; background:transparent; color:#e5e7eb; border:0; text-align:left; padding:.5rem .5rem; border-radius:10px; cursor:pointer; }
+.hh-search-row:hover, .hh-search-item.is-active .hh-search-row{ background:rgba(255,255,255,.06); }
+.hh-search-avatar{ width:28px; height:28px; border-radius:50%; object-fit:cover; background:#222; }
+.hh-search-name{ white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  :root {
+    /* skaliert zwischen klein (mobile) und groß (desktop) */
+    --hh-input-h:        clamp(36px, 6.5vw, 44px);
+    --hh-input-radius:   clamp(10px, 2.5vw, 12px);
+    --hh-input-pad-x:    clamp(10px, 3vw, 14px);
+    --hh-input-icon:     clamp(16px, 3.5vw, 20px);
+    --hh-search-max-w:   clamp(260px, 92vw, 720px);
+  }
+  #search-subbar .hh-search       { max-width: var(--hh-search-max-w); }
+  #search-subbar .hh-search-input {
+    height: var(--hh-input-h);
+    border-radius: var(--hh-input-radius);
+    padding-left: calc(var(--hh-input-pad-x) + var(--hh-input-icon) + 6px);
+    padding-right: var(--hh-input-pad-x);
+    /* Tipp: iOS-Zoom vermeiden → 16px auf Inputs lassen */
+    font-size: 16px;
+  }
+  #search-subbar .hh-search svg {
+    left: var(--hh-input-pad-x);
+    width: var(--hh-input-icon);
+    height: var(--hh-input-icon);
+    top: 50%; transform: translateY(-50%);
+  }

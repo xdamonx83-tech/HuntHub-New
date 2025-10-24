@@ -1,0 +1,1 @@
+<?php /** Wird bereits in /wall/index.php inline gerendert – optionaler Auszug, falls du wiederverwenden willst. */

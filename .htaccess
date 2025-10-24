@@ -1,0 +1,35 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  Options -MultiViews
+
+ErrorDocument 404 /404.php
+DirectoryIndex index.php
+  # Echte Dateien/Ordner direkt liefern
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # (optional) zusätzliche Absicherung
+  RewriteRule ^assets/ - [L]
+  RewriteRule ^uploads/ - [L]
+  RewriteRule ^api/ - [L]
+RewriteRule ^u/assets/(.*)$ assets/$1 [R=302,L]
+RewriteRule ^forum/assets/(.*)$ assets/$1 [R=302,L]
+  # Pretty URL Profil
+  RewriteRule ^u/([A-Za-z0-9_-]+)/?$ user.php?slug=$1 [L,QSA]
+RewriteRule ^lvl/?$ gamification/overview.php [L,QSA]
+  # Root
+  RewriteRule ^$ index.php [L]
+</IfModule>
+AddType video/mp4  .mp4
+AddType video/webm .webm
+AddType video/ogg  .ogv .ogg
+AddType video/quicktime .mov
+
+# Einzelner Wall-Post als Pretty URL:
+# /p/123            -> /wall/post.php?id=123
+# /p/123-irgendein-slug -> /wall/post.php?id=123
+RewriteRule ^p/([0-9]+)(?:-[A-Za-z0-9\-._]+)?$ /wall/post.php?id=$1 [L,QSA]
+
+# (Optional, wenn du lieber /wall/p/... möchtest)
+RewriteRule ^wall/p/([0-9]+)(?:-[A-Za-z0-9\-._]+)?$ /wall/post.php?id=$1 [L,QSA]

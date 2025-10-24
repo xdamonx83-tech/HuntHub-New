@@ -1,0 +1,15 @@
+/* nicer modal */
+.hh-modal{position:fixed;inset:0;z-index:2147483647;display:flex;align-items:center;justify-content:center}
+.hh-modal__overlay{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(2px);animation:hh-fade .12s ease}
+.hh-modal__panel{position:relative;width:min(92vw,520px);background:#1a1c1f;border:1px solid #2c2f33;border-radius:14px;box-shadow:0 20px 80px rgba(0,0,0,.55);padding:22px 22px}
+.hh-modal__title{font-weight:800;font-size:22px;line-height:1.2;margin:0 0 6px;color:#fff}
+.hh-modal__msg{color:#aeb3b7;margin:6px 0 18px;font-size:15px}
+.hh-modal__actions{display:flex;justify-content:flex-end;gap:10px}
+.hh-close{position:absolute;top:10px;right:10px;border:0;background:transparent;color:#cbd0d6;cursor:pointer}
+.hh-close:hover{color:#fff}
+@keyframes hh-fade{from{opacity:0}to{opacity:1}}
+@keyframes hh-pop{from{opacity:0;transform:translateY(6px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.hh-pop{animation:hh-pop .16s cubic-bezier(.2,.8,.2,1)}
+/* falls dein Theme kein btn-danger hat */
+.btn-danger{background:#dc2626;color:#fff}
+.btn-danger:hover{filter:brightness(1.05)}

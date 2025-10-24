@@ -1,0 +1,53 @@
+.hh-modal{position:fixed; inset:0; z-index:1000;}
+.hh-modal.hidden{display:none;}
+.hh-modal-backdrop{position:absolute; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(2px);}
+.hh-modal-dialog{
+  position:relative; z-index:1; margin:4vh auto; width:min(920px,94vw); height:92vh;
+  background:rgba(17,17,17,.95); border:1px solid rgba(255,255,255,.08);
+  border-radius:16px; display:flex; flex-direction:column; box-shadow:0 20px 50px rgba(0,0,0,.5);
+}
+.hh-modal-header{display:flex; align-items:center; justify-content:space-between;
+  padding:14px 18px; border-bottom:1px solid rgba(255,255,255,.08); position:sticky; top:0; background:inherit; z-index:2;}
+.hh-modal-header h3{font-size:18px; font-weight:600; margin:0;}
+.hh-modal-close{width:34px; height:34px; border-radius:999px; background:transparent; color:#fff; border:1px solid rgba(255,255,255,.12);}
+.hh-modal-close:hover{background:rgba(255,255,255,.08);}
+.hh-modal-body{flex:1; overflow:auto; padding:14px;}
+.hh-modal-content .hh-card.hh-post{box-shadow:none; background:transparent;}
+/* ===== Comments-Modal: Header | Body (scroll) | Footer (fix) ===== */
+#hh-comments-modal .hh-modal-dialog{
+  display: grid;
+  grid-template-rows: auto 1fr auto;   /* Header | Body | Footer */
+  width: min(1000px, 95vw);
+  height: min(88vh, var(--hh100vh, 100vh));
+  background: rgba(16,16,18,.98);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0,0,0,.5);
+}
+
+#hh-comments-modal .hh-modal-header{
+  position: sticky; top: 0; z-index: 2;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  background: inherit;
+}
+
+#hh-comments-modal .hh-modal-body{
+  overflow: auto;                    /* nur dieser Teil scrollt */
+  -webkit-overflow-scrolling: touch;
+}
+
+#hh-comments-modal .hh-modal-footer{
+  position: sticky; bottom: 0; z-index: 2;   /* immer sichtbar */
+  background: inherit;
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom));
+}
+
+/* Mobile: wirklich Fullscreen */
+@media (max-width: 768px){
+  #hh-comments-modal .hh-modal-dialog{
+    width: 100vw; height: var(--hh100vh, 100vh);
+    border-radius: 0;
+  }
+}

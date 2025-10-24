@@ -1,0 +1,65 @@
+/* Karte & Fake-Input */
+.hh-card { box-shadow: 0 6px 22px rgba(0,0,0,.25); }
+.hh-fake-input { transition: box-shadow .2s ease, background-color .2s ease; }
+.hh-fake-input:hover { box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset; }
+
+/* Chips & Buttons */
+.hh-chip{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:2rem; height:2rem; padding:.25rem .5rem;
+  border-radius:9999px; background:rgba(38,38,38,.6);
+  border:1px solid rgba(255,255,255,.08);
+}
+.hh-icon-btn{
+  padding:.5rem; border-radius:9999px;
+  background:transparent; transition:background .15s ease;
+}
+.hh-icon-btn:hover{ background:rgba(255,255,255,.08); }
+
+.hh-select{
+  background:#1f2937; color:#fff; border-radius:.5rem;
+  border:1px solid rgba(255,255,255,.12); padding:.25rem .5rem;
+}
+.hh-textarea{
+  width:100%; background:#1f2937; color:#fff;
+  border-radius:.75rem; border:1px solid rgba(255,255,255,.12);
+  padding: .75rem .75rem 1.75rem .75rem; resize:vertical;
+  outline:none;
+}
+.hh-textarea:focus{ border-color: rgba(16,185,129,.6); box-shadow: 0 0 0 3px rgba(16,185,129,.25); }
+
+.hh-primary-btn{
+  background:#10b981; color:#0b0f0e; border-radius:.75rem;
+  transition:filter .15s ease, transform .02s ease;
+}
+.hh-primary-btn:hover{ filter:brightness(1.05); }
+.hh-primary-btn:active{ transform:translateY(1px); }
+.hh-primary-btn:disabled{ opacity:.6; }
+
+/* Modal Shell */
+.hh-modal{
+  position:fixed; inset:0; z-index:50; display:none;
+}
+.hh-modal.open{ display:block; }
+.hh-modal__backdrop{
+  position:absolute; inset:0; background:rgba(0,0,0,.6);
+  opacity:0; transition:opacity .18s ease;
+}
+.hh-modal.open .hh-modal__backdrop{ opacity:1; }
+
+.hh-modal__wrap{
+  position:absolute; inset:0; display:flex; justify-content:center; align-items:flex-start;
+  padding:1rem; overflow:auto;
+}
+.hh-modal__panel{
+  width:100%; max-width:42rem;
+  margin-top: min(8vh, 4rem);
+  background:linear-gradient(180deg, rgba(23,23,23,.98), rgba(17,17,17,.98));
+  color:#fff; border-radius:1rem; border:1px solid rgba(255,255,255,.10);
+  box-shadow: 0 20px 50px rgba(0,0,0,.5);
+  transform: translateY(6px) scale(.98); opacity:0;
+  transition: transform .18s ease, opacity .18s ease;
+}
+.hh-modal.open .hh-modal__panel{
+  transform: translateY(0) scale(1); opacity:1;
+}
